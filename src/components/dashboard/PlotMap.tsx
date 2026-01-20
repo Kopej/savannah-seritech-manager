@@ -49,8 +49,8 @@ export function PlotMap({ plots, tasks, expenses, payments, onPlotClick }: PlotM
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    // Initialize map centered on Narok, Kenya
-    const map = L.map(containerRef.current).setView([-1.1, 35.8], 10);
+    // Initialize map centered on Homa Bay, Kenya
+    const map = L.map(containerRef.current).setView([-0.5, 34.45], 11);
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',

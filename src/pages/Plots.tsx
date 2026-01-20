@@ -1,17 +1,29 @@
-import { Link } from 'react-router-dom';
-import { Search, Plus, MapPin, Calendar, DollarSign } from 'lucide-react';
+import { Link, useParams } from 'react-router-dom';
+import { Search, MapPin } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePlots, useTasks, useWeeklyExpenses } from '@/hooks/usePlots';
 import { useState } from 'react';
 import { format } from 'date-fns';
+import { AddPlotDialog } from '@/components/plots/AddPlotDialog';
+import { PlotDetailView } from '@/components/plots/PlotDetailView';
 
 export default function Plots() {
+  const { id } = useParams();
   const { data: plots = [], isLoading } = usePlots();
   const { data: tasks = [] } = useTasks();
   const { data: expenses = [] } = useWeeklyExpenses();
   const [search, setSearch] = useState('');
+
+  // If we have an ID, show the detail view
+  if (id) {
+    return (
+      <AppLayout>
+        <PlotDetailView />
+      </AppLayout>
+    );
+  }
 
   const filteredPlots = plots.filter(p => 
     p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -30,11 +42,9 @@ export default function Plots() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="page-title">Plots</h1>
-            <p className="page-description">Manage your mulberry plantation plots</p>
+            <p className="page-description">Manage your mulberry plantation plots in Homa Bay County</p>
           </div>
-          <Button>
-            <Plus className="mr-2 h-4 w-4" /> Add Plot
-          </Button>
+          <AddPlotDialog />
         </div>
       </div>
 
@@ -50,49 +60,60 @@ export default function Plots() {
         </div>
       </div>
 
-      <div className="data-table">
-        <table className="w-full">
-          <thead className="border-b bg-muted/50">
-            <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Plot Name</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Acreage</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Variety</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Lease End</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Next Payment</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Budget</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Expenses YTD</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredPlots.map((plot) => (
-              <tr key={plot.id} className="border-b hover:bg-muted/30 transition-colors">
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    <span className="font-medium">{plot.name}</span>
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-sm">{plot.acreage} acres</td>
-                <td className="px-4 py-3 text-sm">{plot.crop_variety}</td>
-                <td className="px-4 py-3 text-sm">
-                  {plot.lease_end_date ? format(new Date(plot.lease_end_date), 'MMM yyyy') : '-'}
-                </td>
-                <td className="px-4 py-3 text-sm">
-                  {plot.next_payment_date ? format(new Date(plot.next_payment_date), 'MMM dd') : '-'}
-                </td>
-                <td className="px-4 py-3 text-sm">KES {Number(plot.annual_budget).toLocaleString()}</td>
-                <td className="px-4 py-3 text-sm">KES {getPlotExpenses(plot.id).toLocaleString()}</td>
-                <td className="px-4 py-3">
-                  <Link to={`/plots/${plot.id}`}>
-                    <Button variant="outline" size="sm">View Details</Button>
-                  </Link>
-                </td>
+      {isLoading ? (
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-pulse text-primary">Loading plots...</div>
+        </div>
+      ) : filteredPlots.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground mb-4">No plots found</p>
+          <AddPlotDialog />
+        </div>
+      ) : (
+        <div className="data-table">
+          <table className="w-full">
+            <thead className="border-b bg-muted/50">
+              <tr>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Plot Name</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Acreage</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Variety</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Lease End</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Next Payment</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Budget</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Expenses YTD</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredPlots.map((plot) => (
+                <tr key={plot.id} className="border-b hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-primary" />
+                      <span className="font-medium">{plot.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-sm">{plot.acreage} acres</td>
+                  <td className="px-4 py-3 text-sm">{plot.crop_variety}</td>
+                  <td className="px-4 py-3 text-sm">
+                    {plot.lease_end_date ? format(new Date(plot.lease_end_date), 'MMM yyyy') : '-'}
+                  </td>
+                  <td className="px-4 py-3 text-sm">
+                    {plot.next_payment_date ? format(new Date(plot.next_payment_date), 'MMM dd') : '-'}
+                  </td>
+                  <td className="px-4 py-3 text-sm">KES {Number(plot.annual_budget).toLocaleString()}</td>
+                  <td className="px-4 py-3 text-sm">KES {getPlotExpenses(plot.id).toLocaleString()}</td>
+                  <td className="px-4 py-3">
+                    <Link to={`/plots/${plot.id}`}>
+                      <Button variant="outline" size="sm">View Details</Button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </AppLayout>
   );
 }
