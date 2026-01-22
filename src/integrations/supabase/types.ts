@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_settings: {
+        Row: {
+          created_at: string
+          id: string
+          setting_key: string
+          setting_value: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          setting_key: string
+          setting_value?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          setting_key?: string
+          setting_value?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -121,45 +145,57 @@ export type Database = {
         Row: {
           acreage: number
           annual_budget: number | null
+          bed_length: number | null
           created_at: string
           crop_variety: string | null
           id: string
+          irrigation_status: string | null
           latitude: number
           lease_end_date: string | null
           lease_start_date: string | null
           longitude: number
           name: string
           next_payment_date: string | null
+          number_of_beds: number | null
+          plot_perimeter: number | null
           soil_type: string | null
           updated_at: string
         }
         Insert: {
           acreage: number
           annual_budget?: number | null
+          bed_length?: number | null
           created_at?: string
           crop_variety?: string | null
           id?: string
+          irrigation_status?: string | null
           latitude: number
           lease_end_date?: string | null
           lease_start_date?: string | null
           longitude: number
           name: string
           next_payment_date?: string | null
+          number_of_beds?: number | null
+          plot_perimeter?: number | null
           soil_type?: string | null
           updated_at?: string
         }
         Update: {
           acreage?: number
           annual_budget?: number | null
+          bed_length?: number | null
           created_at?: string
           crop_variety?: string | null
           id?: string
+          irrigation_status?: string | null
           latitude?: number
           lease_end_date?: string | null
           lease_start_date?: string | null
           longitude?: number
           name?: string
           next_payment_date?: string | null
+          number_of_beds?: number | null
+          plot_perimeter?: number | null
           soil_type?: string | null
           updated_at?: string
         }

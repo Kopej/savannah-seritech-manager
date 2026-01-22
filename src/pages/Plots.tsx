@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { Search, MapPin } from 'lucide-react';
+import { Search, MapPin, Pencil } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,7 @@ import { usePlots, useTasks, useWeeklyExpenses } from '@/hooks/usePlots';
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { AddPlotDialog } from '@/components/plots/AddPlotDialog';
+import { EditPlotDialog } from '@/components/plots/EditPlotDialog';
 import { PlotDetailView } from '@/components/plots/PlotDetailView';
 
 export default function Plots() {
@@ -70,15 +71,18 @@ export default function Plots() {
           <AddPlotDialog />
         </div>
       ) : (
-        <div className="data-table">
-          <table className="w-full">
+        <div className="data-table overflow-x-auto">
+          <table className="w-full min-w-[1200px]">
             <thead className="border-b bg-muted/50">
               <tr>
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Plot Name</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Acreage</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Variety</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Perimeter</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Irrigation</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Beds</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Bed Length</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Lease End</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Next Payment</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Budget</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Expenses YTD</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Actions</th>
@@ -93,20 +97,31 @@ export default function Plots() {
                       <span className="font-medium">{plot.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm">{plot.acreage} acres</td>
+                  <td className="px-4 py-3 text-sm">{plot.acreage} ac</td>
                   <td className="px-4 py-3 text-sm">{plot.crop_variety}</td>
+                  <td className="px-4 py-3 text-sm">{plot.plot_perimeter ? `${plot.plot_perimeter}m` : '-'}</td>
+                  <td className="px-4 py-3 text-sm">{plot.irrigation_status || '-'}</td>
+                  <td className="px-4 py-3 text-sm">{plot.number_of_beds || '-'}</td>
+                  <td className="px-4 py-3 text-sm">{plot.bed_length ? `${plot.bed_length}m` : '-'}</td>
                   <td className="px-4 py-3 text-sm">
                     {plot.lease_end_date ? format(new Date(plot.lease_end_date), 'MMM yyyy') : '-'}
-                  </td>
-                  <td className="px-4 py-3 text-sm">
-                    {plot.next_payment_date ? format(new Date(plot.next_payment_date), 'MMM dd') : '-'}
                   </td>
                   <td className="px-4 py-3 text-sm">KES {Number(plot.annual_budget).toLocaleString()}</td>
                   <td className="px-4 py-3 text-sm">KES {getPlotExpenses(plot.id).toLocaleString()}</td>
                   <td className="px-4 py-3">
-                    <Link to={`/plots/${plot.id}`}>
-                      <Button variant="outline" size="sm">View Details</Button>
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <EditPlotDialog 
+                        plot={plot} 
+                        trigger={
+                          <Button variant="ghost" size="sm">
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                        } 
+                      />
+                      <Link to={`/plots/${plot.id}`}>
+                        <Button variant="outline" size="sm">View</Button>
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))}
