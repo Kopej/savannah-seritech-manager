@@ -12,6 +12,10 @@ export interface Plot {
   lease_end_date: string | null;
   next_payment_date: string | null;
   annual_budget: number;
+  plot_perimeter: number | null;
+  irrigation_status: string | null;
+  number_of_beds: number | null;
+  bed_length: number | null;
   created_at: string;
   updated_at: string;
 }

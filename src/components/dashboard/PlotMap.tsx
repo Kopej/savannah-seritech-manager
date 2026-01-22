@@ -96,11 +96,11 @@ export function PlotMap({ plots, tasks, expenses, payments, onPlotClick }: PlotM
       const pieChartSvg = createMiniPieChart(taskBreakdown, totalTaskCount);
 
       const popupContent = `
-        <div style="min-width: 280px; padding: 16px; font-family: system-ui, sans-serif;">
+        <div style="min-width: 300px; padding: 16px; font-family: system-ui, sans-serif;">
           <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #166534;">
             ${plot.name}
           </h3>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
             <div style="background: #f0fdf4; padding: 8px; border-radius: 8px;">
               <div style="font-size: 11px; color: #666;">Acreage</div>
               <div style="font-size: 14px; font-weight: 600; color: #166534;">${plot.acreage} acres</div>
@@ -108,6 +108,24 @@ export function PlotMap({ plots, tasks, expenses, payments, onPlotClick }: PlotM
             <div style="background: #fdf8f3; padding: 8px; border-radius: 8px;">
               <div style="font-size: 11px; color: #666;">Variety</div>
               <div style="font-size: 14px; font-weight: 600; color: #8B4513;">${plot.crop_variety}</div>
+            </div>
+            <div style="background: #eff6ff; padding: 8px; border-radius: 8px;">
+              <div style="font-size: 11px; color: #666;">Irrigation</div>
+              <div style="font-size: 13px; font-weight: 600; color: #1d4ed8;">${plot.irrigation_status || 'Not set'}</div>
+            </div>
+            <div style="background: #fef3c7; padding: 8px; border-radius: 8px;">
+              <div style="font-size: 11px; color: #666;">Beds</div>
+              <div style="font-size: 13px; font-weight: 600; color: #92400e;">${plot.number_of_beds || '-'} beds</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+            <div style="background: #f3e8ff; padding: 8px; border-radius: 8px;">
+              <div style="font-size: 11px; color: #666;">Perimeter</div>
+              <div style="font-size: 13px; font-weight: 600; color: #7c3aed;">${plot.plot_perimeter ? `${plot.plot_perimeter}m` : '-'}</div>
+            </div>
+            <div style="background: #ecfdf5; padding: 8px; border-radius: 8px;">
+              <div style="font-size: 11px; color: #666;">Bed Length</div>
+              <div style="font-size: 13px; font-weight: 600; color: #059669;">${plot.bed_length ? `${plot.bed_length}m` : '-'}</div>
             </div>
           </div>
           <div style="margin-bottom: 12px;">
