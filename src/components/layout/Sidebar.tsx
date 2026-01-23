@@ -7,7 +7,8 @@ import {
   BarChart3, 
   MessageSquare,
   Leaf,
-  LogOut
+  LogOut,
+  Building2
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
@@ -16,6 +17,7 @@ const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
   { name: 'Plots', href: '/plots', icon: MapPin },
   { name: 'Financials', href: '/financials', icon: DollarSign },
+  { name: 'CAPEX Tracker', href: '/capex', icon: Building2 },
   { name: 'Satellite Analysis', href: '/satellite', icon: Satellite },
   { name: 'Reports & Analytics', href: '/reports', icon: BarChart3 },
   { name: 'Contact / Feedback', href: '/contact', icon: MessageSquare },

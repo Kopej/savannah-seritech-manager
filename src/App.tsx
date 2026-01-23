@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import Plots from "./pages/Plots";
 import Financials from "./pages/Financials";
+import Capex from "./pages/Capex";
 import Satellite from "./pages/Satellite";
 import Reports from "./pages/Reports";
 import Contact from "./pages/Contact";
@@ -59,6 +60,7 @@ function AppRoutes() {
       <Route path="/plots" element={<ProtectedRoute><Plots /></ProtectedRoute>} />
       <Route path="/plots/:id" element={<ProtectedRoute><Plots /></ProtectedRoute>} />
       <Route path="/financials" element={<ProtectedRoute><Financials /></ProtectedRoute>} />
+      <Route path="/capex" element={<ProtectedRoute><Capex /></ProtectedRoute>} />
       <Route path="/satellite" element={<ProtectedRoute><Satellite /></ProtectedRoute>} />
       <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
       <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />

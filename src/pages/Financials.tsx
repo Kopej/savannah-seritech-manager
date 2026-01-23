@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Calendar, DollarSign, TrendingUp, AlertCircle } from 'lucide-react';
 import { AddTaskDialog } from '@/components/plots/AddTaskDialog';
+import { ImportExpensesDialog } from '@/components/financials/ImportExpensesDialog';
 
 export default function Financials() {
   const { data: plots = [] } = usePlots();
@@ -224,6 +225,11 @@ export default function Financials() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Import Expenses Section */}
+      <div className="mt-6">
+        <ImportExpensesDialog />
       </div>
 
       {/* Add Task Section */}
